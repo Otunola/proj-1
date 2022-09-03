@@ -46,6 +46,54 @@ which then gave the output below
 
 <img width="566" alt="Screen Shot 2022-09-03 at 1 30 17 PM" src="https://user-images.githubusercontent.com/112595648/188270488-16dead42-7d43-4643-898c-31cc48b672c8.png">
 
-16. now create a virtual host using apache
+16. now create a virtual host using the apache. setup a domain called projectlamp and we create a directory for it with the command : sudo mkdir /var/www/projectlamp
 
+17. we assign the ownership of our current user with the directory with this command :  sudo chown -R $USER:$USER /var/www/projectlamp
 
+18. Then, create and open a new configuration file in Apache’s sites-available directory using the VI command-line editor with the command : sudo vi /etc/apache2/sites-available/projectlamp.conf
+
+19. then we insert and save the following comands: <VirtualHost *:80>
+    ServerName projectlamp
+    ServerAlias www.projectlamp 
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/projectlamp
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+20. we use ls command to show the new file in the sites-available directory
+
+<img width="565" alt="Screen Shot 2022-09-03 at 2 04 01 PM" src="https://user-images.githubusercontent.com/112595648/188271699-70ec66b7-2a7f-4275-b3f2-d80292c31b09.png">
+
+21. use the command to enable the projectlamp created : sudo a2ensite projectlamp
+22. disable the default site with the command : sudo a2dissite 000-default
+23. check if the configurations has errors so far with the commnad : sudo apache2ctl configtest    as seen below everything looks ok
+
+<img width="564" alt="Screen Shot 2022-09-03 at 2 07 22 PM" src="https://user-images.githubusercontent.com/112595648/188271837-9e124f3a-a01e-49a0-88e6-58f99c11444c.png">
+
+24. we relaod apache with the command for the configs to take effect: sudo systemctl reload apache2
+25. Create an index.html file in that location and use echo to write a text on the index.html create with echoe with the command : sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectlamp/index.html
+
+26. confirmed everything works well by entering the server public ip on the url
+<img width="1138" alt="Screen Shot 2022-09-03 at 2 13 26 PM" src="https://user-images.githubusercontent.com/112595648/188272069-d542a5d9-f777-4875-8044-6c64878778b0.png">
+
+27. next we enable php on the website and will change the directory index behaviour so that .php can load first over.html with this command : sudo vim /etc/apache2/mods-enabled/dir.conf
+28. delete the content you have there with :%d and paste the script below: <IfModule mod_dir.c>
+        #Change this:
+        #DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm
+        #To this:
+        DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+</IfModule>
+save with :wq
+
+29. reload the apache with this command for the changes to take effect : sudo systemctl reload apache2
+30. we create the index.php file as the new landing page with the command: vim /var/www/projectlamp/index.php
+
+and save this content:
+<?php
+phpinfo();
+31. for confirmation, enter the server address in the url again and this was the output as expected:
+<img width="1346" alt="Screen Shot 2022-09-03 at 2 29 07 PM" src="https://user-images.githubusercontent.com/112595648/188272668-663ee68f-a485-4650-9a63-76758e24a508.png">
+
+32. for security sake the page above should be removed because it contains so much information
+sudo rm /var/www/projectlamp/index.php
