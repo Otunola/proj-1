@@ -92,8 +92,11 @@ save with :wq
 and save this content:
 <?php
 phpinfo();
+
 31. for confirmation, enter the server address in the url again and this was the output as expected:
-<img width="1346" alt="Screen Shot 2022-09-03 at 2 29 07 PM" src="https://user-images.githubusercontent.com/112595648/188272668-663ee68f-a485-4650-9a63-76758e24a508.png">
+
+<img width="1346" alt="Screen Shot 2022-09-03 at 2 29 07 PM" src="https://user-images.githubusercontent.com/112595648/188273007-b63c7db9-f8eb-4bbd-a6ea-0072db4de1ab.png">
+
 
 32. for security sake the page above should be removed because it contains so much information
 sudo rm /var/www/projectlamp/index.php
