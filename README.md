@@ -100,3 +100,6 @@ phpinfo();
 
 32. for security sake the page above should be removed because it contains so much information
 sudo rm /var/www/projectlamp/index.php
+
+<img width="1043" alt="Screen Shot 2022-09-03 at 2 39 41 PM" src="https://user-images.githubusercontent.com/112595648/188273069-ce2ae6f0-d479-4d32-93b8-f3106e641aa9.png">
+
